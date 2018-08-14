@@ -23,7 +23,6 @@ const directory = pwd() * "/256-64-t0044/"#"/flow/"#"/256-64-t004/"
 const block_info = b_info
 const blocks = b
 
-# spherical mesh
 R = [3]
 Nl = Int(round(2*pi/block_info.spacing[1] /2))
 
