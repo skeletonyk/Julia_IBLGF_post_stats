@@ -1,6 +1,8 @@
 using MuladdMacro
 include("ddf.jl")
-function Cartesian2sphere_intrp(f :: Array{Float64,2}, r, N_τ, N_ϕ, mesh_τ, mesh_ϕ, blocks_cap, vel_component)
+let
+xyz = [0.0, 0.0, 0.0]
+global function Cartesian2sphere_intrp(f :: Array{Float64,2}, r, N_τ, N_ϕ, mesh_τ, mesh_ϕ, blocks_cap, vel_component)
     for i = 1 : N_τ
         for j = 1 : N_ϕ
             τ = mesh_τ[i]
@@ -8,16 +10,17 @@ function Cartesian2sphere_intrp(f :: Array{Float64,2}, r, N_τ, N_ϕ, mesh_τ, m
 
             # cal x y z for interpolation
             θ = acos(τ)
-            z = r * cos(θ)
-            x = r * sin(θ)cos(ϕ)
-            y = r * sin(θ)sin(ϕ)
+            xyz[3] = r * cos(θ)
+            xyz[1] = r * sin(θ)cos(ϕ)
+            xyz[2] = r * sin(θ)sin(ϕ)
 
             get = (b, i, j, k)-> get_vel(b, i, j, k, vel_component)
-            f[i,j] = intrpl(blocks_cap, [x,y,z], get)
+            f[i,j] = intrpl(blocks_cap, xyz, get)
 
         end
     end
     f .-= mean(f)
+end
 end
 
 let

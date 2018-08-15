@@ -27,7 +27,7 @@ println("- reading the file - end")
 println()
 println("- main - ")
 # for all radius choices
-R = [3]
+R = [2, 3, 4, 5, 6]
 
 for r in R
     @time f, k, C, lC = stats_shell(r)

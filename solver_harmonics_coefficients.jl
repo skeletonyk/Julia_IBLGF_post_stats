@@ -34,8 +34,8 @@ function harmonics_coefficients(N_l, s)
 
     y_τ =0.0
     for l = 0 : N_l-1
+
         for m = -l : l
-            println([l,m])
 
             # integrating
             for i = 1 : s.N_τ
@@ -53,8 +53,8 @@ function harmonics_coefficients(N_l, s)
             end
 
             for vel_component = 1 :3
-                @. product = s.u[:,:,vel_component] * Y_lm
 
+                product .= view(s.u,:,:,vel_component) .* Y_lm
                 f_lm[l+1, m+l+1, vel_component] = sum(product) / s.N_τ / s.N_ϕ * 4 * π
             end
 
