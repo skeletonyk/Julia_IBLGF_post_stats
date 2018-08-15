@@ -25,5 +25,5 @@ function stats_shell(r)
     # C_l spectrum
     k, C, lC = spectrum(N_l, f_lm)
 
-    return shell.f, k, C, lC
+    return shell.u, k, C, lC
 end

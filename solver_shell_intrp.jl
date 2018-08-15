@@ -1,6 +1,6 @@
 using MuladdMacro
 include("ddf.jl")
-function Cartesian2sphere_intrp(f, r, N_τ, N_ϕ, mesh_τ, mesh_ϕ, blocks_cap)
+function Cartesian2sphere_intrp(f :: Array{Float64,2}, r, N_τ, N_ϕ, mesh_τ, mesh_ϕ, blocks_cap, vel_component)
     for i = 1 : N_τ
         for j = 1 : N_ϕ
             τ = mesh_τ[i]
@@ -12,7 +12,7 @@ function Cartesian2sphere_intrp(f, r, N_τ, N_ϕ, mesh_τ, mesh_ϕ, blocks_cap)
             x = r * sin(θ)cos(ϕ)
             y = r * sin(θ)sin(ϕ)
 
-            get = (b, i, j, k)-> get_vel(b, i, j, k, 1)
+            get = (b, i, j, k)-> get_vel(b, i, j, k, vel_component)
             f[i,j] = intrpl(blocks_cap, [x,y,z], get)
 
         end

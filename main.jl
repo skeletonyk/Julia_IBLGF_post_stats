@@ -10,7 +10,7 @@ include("read_vtk.jl")
 include("solver.jl")
 
 const center = [18.8495559215, 18.8495559215, 18.8495559215]
-const directory = pwd() * "/256-64-t0044/"#"/flow/"#"/256-64-t004/"
+const directory = pwd() * "/256-64-t0044/"#"/flow/"#"/256-64-t0044/"#
 
 # ---- read all --------------------------------------------------------------
 #

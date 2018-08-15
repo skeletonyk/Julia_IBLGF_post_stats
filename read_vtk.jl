@@ -1,5 +1,5 @@
 #ENV["PYTHON"] = "/Users/yuke1/anaconda2/bin/python"
-ENV["PYTHON"] = "/home/ke/anaconda3/bin/python"
+#ENV["PYTHON"] = "/home/ke/anaconda3/bin/python"
 using PyCall
 
 @pyimport read_node
@@ -11,10 +11,11 @@ function read_all(directory, center)
 
     blocks = Array{block_t, 1}(undef, f_count)
 
-    i=1
-    spacing = 0
+    i = 1
+    spacing = []
     dim = []
-    for fn in readdir(directory)
+    dlist :: Array{String,1}= readdir(directory)
+    for fn in dlist
         if endswith(fn, "vti")
             #println(directory * fn)
             vel, origin, spacing, dim = read_node.vtiread(directory * fn)
