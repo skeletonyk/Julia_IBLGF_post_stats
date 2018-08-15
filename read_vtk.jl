@@ -1,7 +1,8 @@
 #ENV["PYTHON"] = "/Users/yuke1/anaconda2/bin/python"
 #ENV["PYTHON"] = "/home/ke/anaconda3/bin/python"
+#pushfirst!(PyVector(pyimport("sys")["path"]), "")
 using PyCall
-
+#pushfirst!(PyVector(pyimport("sys")["path"]), "")
 @pyimport read_node
 
 function read_all(directory, center)

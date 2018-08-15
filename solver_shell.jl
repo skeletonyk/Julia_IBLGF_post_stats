@@ -14,8 +14,8 @@ function shell_field(r, blocks_cap)
     N_τ = Int(floor(sqrt(N_planar_2/2))+1)
     N_ϕ = N_τ * 2
 
-    #N_τ *=4
-    #N_ϕ *=4
+    #N_τ *=2
+    #N_ϕ *=2
 
     mesh_τ = collect(LinRange(-1, 1, N_τ))
     mesh_ϕ = collect(LinRange(-π, π, N_ϕ))

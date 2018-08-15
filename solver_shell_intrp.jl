@@ -44,11 +44,11 @@ let
 
     global function get_vel(b :: block_t, i :: Int, j :: Int, k :: Int, ind :: Int)
         #@. vrtx = [i, j, k] * block_info.spacing + b.origin
-        @muladd begin
-        vrtx[1] = i * block_info.spacing[1] + b.origin[1]
-        vrtx[2] = j * block_info.spacing[2] + b.origin[2]
-        vrtx[3] = k * block_info.spacing[3] + b.origin[3]
-        end
+        #@muladd begin
+        #vrtx[1] = i * block_info.spacing[1] + b.origin[1]
+        #vrtx[2] = j * block_info.spacing[2] + b.origin[2]
+        #vrtx[3] = k * block_info.spacing[3] + b.origin[3]
+        #end
 
         # using 'F' type of storing order
         n = block_info.dim[1]
@@ -56,7 +56,7 @@ let
         @muladd ijk2n = k * n * n + (j * n + i + 1)
         value = b.vel[ijk2n , ind]
 
-        return vrtx, value
+        return value
         #nothing
     end
 end
@@ -69,15 +69,30 @@ let
     global function intrpl(blocks, coord, get_)
         sum :: Float64 = 0.0
         weight :: Float64 = 0.0
+        spacing = block_info.spacing[1]
+        width = 2.0 + 1e-5
+
         for b in blocks
-            if block_needed(coord, b, 3)
+            if block_needed(coord, b, width)
                 # loop through elements
                 @inbounds for k = 0:block_info.dim[3]-1
+                    δx[1] = k + (b.origin[3] - coord[3])./spacing
+                    if abs(δx[1]) >= width
+                        continue
+                    end
                     @inbounds for j = 0:block_info.dim[3]-1
+                        δx[2] = j + (b.origin[2] - coord[2])./spacing
+                        if abs(δx[2]) >= width
+                            continue
+                        end
                         @inbounds for i = 0:block_info.dim[3]-1
-                            vrtx, value = get_(b, i,j,k)
-                            #plot!(vrtx[1], vrtx[2])
-                            @. δx = (vrtx - coord)/block_info.spacing
+                            δx[3] = i + (b.origin[3] - coord[3])./spacing
+                            if abs(δx[3]) >= width
+                                continue
+                            end
+                            value = get_(b, i,j,k)
+                            #@. δx = (vrtx - coord)/block_info.spacing
+
                             weight = ddf(δx)
                             weight *= value # reuse
                             sum += weight

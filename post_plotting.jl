@@ -1,11 +1,13 @@
 using JLD2
 using Plots
 
-R = [2, 3, 4, 5, 6]
+R = [2, 3, 4, 5]
 r = 3
 k = []
+
+
 for r in R
-    @load pwd()*"/data/64-$(r).jld" k C lC
+    @load pwd()*"/data/$(N)-$(r).jld" k C lC
 
     p = plot()
     for vel_component = 1:3
@@ -34,7 +36,7 @@ for r in R
 
         #savefig(pwd()*"/figs/64-harmonics-r-$(r)-vel$(vel_component).png")
         #savefig(pwd()*"/figs/64-harmonics-r-$(r)-vel$(vel_component).pdf")
-    savefig(pwd()*"/figs/64-harmonics-r-$(r)-vel.png")
+    savefig(pwd()*"/figs/$(N)-harmonics-r-$(r)-vel.png")
 
     tmp = sum(lC,dims=[2])
     plot(k[2:end], tmp[2:end],
@@ -57,6 +59,6 @@ for r in R
                 title!("R = $(r)")
 
         #savefig(pwd()*"/figs/64-harmonics-r-$(r)-vel$(vel_component).png")
-        savefig(pwd()*"/figs/64-harmonics-r-$(r)-sum.png")
+        savefig(pwd()*"/figs/$(N)-harmonics-r-$(r)-sum.png")
 
 end
