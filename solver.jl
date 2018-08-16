@@ -15,13 +15,12 @@ function stats_shell(r)
     blocks_cap = view(blocks, lb:ub)
 
     # build τ-ϕ mesh, assuming basicaly equally sized in Ω
-    println("building shperical shell field")
     refining_parm = 2
-    shell = shell_field(r, blocks_cap, refining_parm )
+    @time shell = shell_field(r, blocks_cap, refining_parm )
 
     # calculating flm
     N_l = Int(round(2*pi/block_info.spacing[1] /2)) # number of P_l s
-    f_lm = harmonics_coefficients( N_l, shell)
+    @time f_lm = harmonics_coefficients( N_l, shell)
 
     # C_l spectrum
     k, C, lC = spectrum(N_l, f_lm)

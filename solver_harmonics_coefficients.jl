@@ -76,12 +76,12 @@ function harmonics_coefficients(N_l, s)
     f_lm ::Array{Float64,3} = zeros(N_l, 2 * N_l, 3) # for 3 vel vel_component
     Y_lm  ::Array{Float64,2} = zeros(s.N_τ, s.N_ϕ)
     product  ::Array{Float64,2} = zeros(s.N_τ, s.N_ϕ)
-    
+
     y_τ =0.0
 
     for l = 0 : N_l-1
-        for m = -l : l
-
+        println("-- l = $(l) --")
+        @time for m = -l : l
             # integrating
             for i = 1 : s.N_τ
                 τ = s.mesh_τ[i]
@@ -107,5 +107,6 @@ function harmonics_coefficients(N_l, s)
         end
     end
 
+    println("calculating f_lm --- end")
     return f_lm
 end
