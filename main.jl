@@ -11,7 +11,7 @@ include("solver.jl")
 
 
 const center = [18.8495559215, 18.8495559215, 18.8495559215]
-const directory = pwd() * "/256-64-t0044/" #"/flow/"# "/256-64-t0044/"# "/home/kyu/scratch/LES-data-init/comet-256/post-processing/flow/tstep-0000002450/"# pwd() * "/256-64-t0044/"#"/flow/"#"/256-64-t0044/"#
+const directory ="/home/kyu/scratch/LES-data-init/comet-256/post-processing/flow/tstep-0000000350" #pwd() * "/256-64-t0044/" #"/flow/"# "/256-64-t0044/"# "/home/kyu/scratch/LES-data-init/comet-256/post-processing/flow/tstep-0000002450/"# pwd() * "/256-64-t0044/"#"/flow/"#"/256-64-t0044/"#
 
 # ---- read all --------------------------------------------------------------
 #
@@ -33,7 +33,7 @@ R = [3]
 
 for r in R
     @time f, k, C, lC = stats_shell(r)
-    @save pwd()*"/data/$(N)-$(r).jld" k C lC
+    @save pwd()*"/data/$(N)-$(r)-t350.jld" k C lC
 end
 
 println("- main - end")
