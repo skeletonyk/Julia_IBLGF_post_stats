@@ -2,14 +2,13 @@ using MuladdMacro
 include("ddf.jl")
 let
 xyz = [0.0, 0.0, 0.0]
-global function Cartesian2sphere_intrp(f :: Array{Float64,2}, r, N_τ, N_ϕ, mesh_τ, mesh_ϕ, blocks_cap, vel_component)
-    for i = 1 : N_τ
+global function Cartesian2sphere_intrp(f :: Array{Float64,2}, r, N_θ, N_ϕ, mesh_θ, mesh_ϕ, blocks_cap, vel_component)
+    for i = 1 : N_θ
         for j = 1 : N_ϕ
-            τ = mesh_τ[i]
+            θ = mesh_θ[i]
             ϕ = mesh_ϕ[j]
 
             # cal x y z for interpolation
-            θ = acos(τ)
             xyz[3] = r * cos(θ)
             xyz[1] = r * sin(θ)cos(ϕ)
             xyz[2] = r * sin(θ)sin(ϕ)
