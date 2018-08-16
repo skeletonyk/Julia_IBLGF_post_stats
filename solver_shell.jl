@@ -52,7 +52,6 @@ function shell_field(r, blocks_cap, refining_parm)
 
     for vel_component = 1:3
         println("-- interpolating velocity field u$(vel_component) -- ")
-        @time let
         Cartesian2sphere_intrp(f, r, N_θ, N_ϕ, mesh_θ, mesh_ϕ, blocks_cap, vel_component)
 
         refining(
@@ -60,7 +59,6 @@ function shell_field(r, blocks_cap, refining_parm)
                                 view(u,:,:, vel_component)),
         shell_field_scalar_t(N_θ, N_ϕ, mesh_θ, mesh_ϕ, f)
         )
-        end
     end
 
     println("building shperical shell field --- end")

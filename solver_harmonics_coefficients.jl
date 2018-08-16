@@ -81,7 +81,7 @@ function harmonics_coefficients(N_l, s)
 
     for l = 0 : N_l-1
         println("-- l = $(l) --")
-        @time for m = -l : l
+        for m = -l : l
             # integrating
             for i = 1 : s.N_θ
                 θ = s.mesh_θ[i]
@@ -99,7 +99,6 @@ function harmonics_coefficients(N_l, s)
                 intgl = integrate(view(s.u,:,:,vel_component), Y_lm, s.N_θ, s.N_ϕ)
                 f_lm[l+1, m+l+1, vel_component] = intgl / s.N_θ / s.N_ϕ * 4 * π
             end
-
         end
     end
 
