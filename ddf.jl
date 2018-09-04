@@ -33,8 +33,15 @@ function gauss(r)
     return exp(-pi^2/36 * rr^2)*sqrt(pi/36);
 
 end
+
+function lin(r)
+    rr = abs(r)
+    return (1 - rr)
+end
+
 function ddf(δx)
     #return yang3(δx[1])*yang3(δx[2])*yang3(δx[3])
-    #return yang4(δx[1])*yang4(δx[2])*yang4(δx[3])
-    return gauss(δx[1])*gauss(δx[2])*gauss(δx[3])
+    return yang4(δx[1])*yang4(δx[2])*yang4(δx[3])
+    return lin(δx[1])*lin(δx[2])*lin(δx[3])
+    #return gauss(δx[1])*gauss(δx[2])*gauss(δx[3])
 end

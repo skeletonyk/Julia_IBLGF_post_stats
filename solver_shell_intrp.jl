@@ -42,21 +42,11 @@ let
     #n = 0
 
     global function get_vel(b :: block_t, i :: Int, j :: Int, k :: Int, ind :: Int)
-        #@. vrtx = [i, j, k] * block_info.spacing + b.origin
-        #@muladd begin
-        #vrtx[1] = i * block_info.spacing[1] + b.origin[1]
-        #vrtx[2] = j * block_info.spacing[2] + b.origin[2]
-        #vrtx[3] = k * block_info.spacing[3] + b.origin[3]
-        #end
-
-        # using 'F' type of storing order
         n = block_info.dim[1]
-
         @muladd ijk2n = k * n * n + (j * n + i + 1)
         value = b.vel[ijk2n , ind]
 
         return value
-        #nothing
     end
 end
 
@@ -69,7 +59,7 @@ let
         sum :: Float64 = 0.0
         weight :: Float64 = 0.0
         spacing = block_info.spacing[1]
-        width = 12.5 + 1e-5
+        width = 1 + 1e-5
 
         for b in blocks
             if block_needed(coord, b, width)
@@ -89,7 +79,7 @@ let
                             if abs(δx[3]) >= width
                                 continue
                             end
-                            value = get_(b, i,j,k)
+                            value = get_(b,i,j,k)
                             #@. δx = (vrtx - coord)/block_info.spacing
 
                             weight = ddf(δx)
