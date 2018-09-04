@@ -44,8 +44,8 @@ function shell_field(r, blocks_cap, refining_parm)
     f = zeros(N_θ, N_ϕ)
 
     #spline and refined mesh of u to have better integral
-    N_θ_refined = (N_θ-1) * refining_parm  + 1
-    N_ϕ_refined = (N_ϕ-1) * refining_parm  + 1
+    N_θ_refined = ((N_θ-1) * refining_parm  + 1)
+    N_ϕ_refined = ((N_ϕ-1) * refining_parm  + 1)  * 4
     mesh_θ_refined = (LinRange(0, π, N_θ_refined ))
     mesh_ϕ_refined = (LinRange(-π, π, N_ϕ_refined ))
     u = zeros(N_θ_refined, N_ϕ_refined, 3)

@@ -1,14 +1,22 @@
 using JLD2
 using Plots
 
-R = [2, 3, 4, 5]
-r = 3
+R = [2,3,4,5,6]
+r = 4
 k = []
 
+ϵν5_1_4 = 2.7888819610767125e-5
+η = 0.00990409742169068
 
+const N =64
+
+version = ""
 for r in R
-    @load pwd()*"/data/$(N)-$(r).jld" k C lC
-
+    str = "$(N)-$(r)-t0352"
+    @load pwd()*"/data/" * str * ".jld" k C lC
+    #@load pwd()*"/data/$(N)-$(r).jld" k C lC
+    #@load pwd()*"/data/$(N)-$(r)-t350.jld" k C lC
+#
     p = plot()
     for vel_component = 1:3
         plot!(k[2:end], lC[2:end, vel_component],
@@ -36,7 +44,7 @@ for r in R
 
         #savefig(pwd()*"/figs/64-harmonics-r-$(r)-vel$(vel_component).png")
         #savefig(pwd()*"/figs/64-harmonics-r-$(r)-vel$(vel_component).pdf")
-    savefig(pwd()*"/figs/$(N)-harmonics-r-$(r)-vel.png")
+    savefig(pwd()*"/figs/" * str * version * "-vel.png")
 
     tmp = sum(lC,dims=[2])
     plot(k[2:end], tmp[2:end],
@@ -59,6 +67,6 @@ for r in R
                 title!("R = $(r)")
 
         #savefig(pwd()*"/figs/64-harmonics-r-$(r)-vel$(vel_component).png")
-        savefig(pwd()*"/figs/$(N)-harmonics-r-$(r)-sum.png")
+        savefig(pwd()*"/figs/" * str *version * "-sum.png")
 
 end

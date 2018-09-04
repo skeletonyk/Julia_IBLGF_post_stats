@@ -69,7 +69,7 @@ let
         sum :: Float64 = 0.0
         weight :: Float64 = 0.0
         spacing = block_info.spacing[1]
-        width = 2.0 + 1e-5
+        width = 2.5 + 1e-5
 
         for b in blocks
             if block_needed(coord, b, width)
