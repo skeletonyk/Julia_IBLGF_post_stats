@@ -71,15 +71,20 @@ function integrate(f, g, N_θ, N_ϕ)
     return sm
 end
 
-function harmonics_coefficients(N_l, s)
+function harmonics_coefficients(N_k, s, r)
     println("calculating f_lm")
-    f_lm ::Array{Float64,3} = zeros(N_l, 2 * N_l, 3) # for 3 vel vel_component
+
+    N_l = N_k .* r
+
+    f_lm ::Array{Float64,3} = zeros(N_k, 2 * N_l, 3) # for 3 vel vel_component
     Y_lm  ::Array{Float64,2} = zeros(s.N_θ, s.N_ϕ)
     product  ::Array{Float64,2} = zeros(s.N_θ, s.N_ϕ)
 
     y_θ =0.0
 
-    for l = 0 : N_l-1
+    for k = 0 : N_k-1
+        l = k*r
+
         println("-- l = $(l) --")
         for m = -l : l
             # integrating
@@ -97,11 +102,12 @@ function harmonics_coefficients(N_l, s)
             for vel_component = 1 :3
                 #product .= view(s.u,:,:,vel_component) .* Y_lm
                 intgl = integrate(view(s.u,:,:,vel_component), Y_lm, s.N_θ, s.N_ϕ)
-                f_lm[l+1, m+l+1, vel_component] = intgl / s.N_θ / s.N_ϕ * 4 * π
+                f_lm[k+1, m+l+1, vel_component] = intgl / s.N_θ / s.N_ϕ * 4 * π
             end
         end
     end
 
     println("calculating f_lm --- end")
-    return f_lm
+    k = sqrt.((0:(N_k-1)) .* (1:(N_k)))
+    return f_lm, k
 end

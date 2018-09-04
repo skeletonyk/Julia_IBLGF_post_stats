@@ -19,11 +19,13 @@ function stats_shell(r)
     @time shell = shell_field(r, blocks_cap, refining_parm )
 
     # calculating flm
-    N_l = Int(round(2*pi/block_info.spacing[1] /2)) # number of P_l s
-    @time f_lm = harmonics_coefficients( N_l, shell)
+    N_k = Int(round(2*pi/block_info.spacing[1] /2))  # number of P_l s
+    @time f_lm, k = harmonics_coefficients( N_k, shell, r)
+
+    println(k)
 
     # C_l spectrum
-    k, C, lC = spectrum(N_l, f_lm)
+    k, C, lC = spectrum(k, N_k, f_lm, r)
 
     return shell.u, k, C, lC
 end
