@@ -13,6 +13,22 @@ function yang3(r)
     end
 end
 
+function yang4(r)
+# Smoothed 4-point delta function of Yang et al (2009)
+    rr = abs(r)
+    if rr<=0.5
+        return 3/8+pi/32-rr^2/4
+    elseif (rr>0.5) && (rr<=1.5)
+        return 1/4+(1-rr)/8*sqrt(-2+8*rr-4*rr^2)-1/8*asin(sqrt(2)*(rr-1))
+    elseif (rr>1.5) && (rr<=2.5)
+        return 17/16-pi/64-3/4*rr+rr^2/8+(rr-2)/16*sqrt(-14+16*rr-4*rr^2)+
+             1/16*asin(sqrt(2)*(rr-2))
+    else return 0.0
+    end
+
+end
+
 function ddf(δx)
-    return yang3(δx[1])*yang3(δx[2])*yang3(δx[3])
+    #return yang3(δx[1])*yang3(δx[2])*yang3(δx[3])
+    return yang4(δx[1])*yang4(δx[2])*yang4(δx[3])
 end
