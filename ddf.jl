@@ -28,7 +28,13 @@ function yang4(r)
 
 end
 
+function gauss(r)
+    rr = abs(r)
+    return exp(-pi^2/36 * rr^2)*sqrt(pi/36);
+
+end
 function ddf(δx)
     #return yang3(δx[1])*yang3(δx[2])*yang3(δx[3])
-    return yang4(δx[1])*yang4(δx[2])*yang4(δx[3])
+    #return yang4(δx[1])*yang4(δx[2])*yang4(δx[3])
+    return gauss(δx[1])*gauss(δx[2])*gauss(δx[3])
 end
