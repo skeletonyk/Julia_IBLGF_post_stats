@@ -37,8 +37,8 @@ function shell_field(r, blocks_cap, refining_parm)
 
     # interpolation mesh
     #N_planar_2 = 4 * π * r^2 / mean(block_info.spacing)^2
-    N_θ = Int(floor( π * r / mean(block_info.spacing) ) +1) #Int(floor(sqrt(N_planar_2/2))+1)
-    N_ϕ = Int(floor( 2 * π * r / mean(block_info.spacing) ) +1) #N_θ * 2
+    N_θ = Int(floor( π * r / mean(block_info.spacing)  ) +1) #Int(floor(sqrt(N_planar_2/2))+1)
+    N_ϕ = Int(floor( 2 * π * r / mean(block_info.spacing) )*2 +1) #N_θ * 2
     mesh_θ =  0: π/(N_θ-1): π #collect(LinRange(-1, 1, N_θ))
     mesh_ϕ = -π: 2*π/(N_ϕ-1):π #collect(LinRange(-π, π, N_ϕ))
     f = zeros(N_θ, N_ϕ)

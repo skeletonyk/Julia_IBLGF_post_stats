@@ -15,7 +15,7 @@ function stats_shell(r)
     blocks_cap = view(blocks, lb:ub)
 
     # build τ-ϕ mesh, assuming basicaly equally sized in Ω
-    refining_parm = 2
+    refining_parm = 1
     @time shell = shell_field(r, blocks_cap, refining_parm )
 
     # calculating flm

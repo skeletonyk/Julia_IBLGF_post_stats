@@ -1,10 +1,10 @@
 @inline function Y_θ(l, m, θ)
     if m>0
-        return GSL.sf_legendre_sphPlm(l, m, cos(θ)) *sqrt(2) * sin(θ)
+        return GSL.sf_legendre_sphPlm(l, m, cos(θ)) *sqrt(2)
     elseif m==0
-        return GSL.sf_legendre_sphPlm(l, m, cos(θ))* sin(θ)
+        return GSL.sf_legendre_sphPlm(l, m, cos(θ))
     else
-        return GSL.sf_legendre_sphPlm(l, -m, cos(θ))*sqrt(2) * sin(θ)
+        return GSL.sf_legendre_sphPlm(l, -m, cos(θ))*sqrt(2)
     end
 end
 
@@ -25,7 +25,17 @@ end
 #        return GSL.sf_legendre_sphPlm(l, -m, θ) * sin(-m * ϕ)*sqrt(2) sin
 #    end
 #end
+function integrate_simple(f, g, sinθ, N_θ, N_ϕ)
 
+    sm = 0.0
+    @inbounds for j = 1:N_ϕ-1
+        @inbounds for i = 1:N_θ
+            sm  += f[i,j] * g[i,j] * sinθ[i,j]
+        end
+    end
+
+    return sm
+end
 function integrate(f, g, N_θ, N_ϕ)
     sm = 0.0
 
@@ -76,34 +86,49 @@ function harmonics_coefficients(N_k, s, r)
 
     N_l = N_k .* r
 
-    f_lm ::Array{Float64,3} = zeros(N_k, 2 * N_l, 3) # for 3 vel vel_component
+    f_lm  ::Array{Float64,3} = zeros(N_k, 2 * N_l, 3) # for 3 vel vel_component
     Y_lm  ::Array{Float64,2} = zeros(s.N_θ, s.N_ϕ)
+    sinθ  ::Array{Float64,2} = zeros(s.N_θ, s.N_ϕ)
+
     product  ::Array{Float64,2} = zeros(s.N_θ, s.N_ϕ)
 
     y_θ =0.0
 
+    #for sinθ
+    for i = 1 : s.N_θ
+        θ = s.mesh_θ[i]
+        #println(θ)
+        for j = 1 : s.N_ϕ
+            sinθ[i, j] = sin(θ)
+        end
+    end
+
+
     for k = 0 : N_k-1
         l = k*r
-
         println("-- l = $(l) --")
         for m = -l : l
             # integrating
-            for i = 1 : s.N_θ
+            @inbounds for i = 1 : s.N_θ
                 θ = s.mesh_θ[i]
                 y_θ =Y_θ(l,m,θ)
 
-                for j = 1 : s.N_ϕ
+                @inbounds for j = 1 : s.N_ϕ
                     ϕ = s.mesh_ϕ[j]
                     Y_lm[i, j] = y_θ * Y_θϕ(m,ϕ)
                 end
 
             end
 
+            tmp = integrate_simple(Y_lm, Y_lm, sinθ, s.N_θ, s.N_ϕ)
             for vel_component = 1 :3
                 #product .= view(s.u,:,:,vel_component) .* Y_lm
-                intgl = integrate(view(s.u,:,:,vel_component), Y_lm, s.N_θ, s.N_ϕ)
-                f_lm[k+1, m+l+1, vel_component] = intgl / s.N_θ / s.N_ϕ * 4 * π
+                intgl = integrate_simple(view(s.u,:,:,vel_component), Y_lm, sinθ, s.N_θ, s.N_ϕ)
+                #f_lm[k+1, m+l+1, vel_component] = intgl / s.N_θ / s.N_ϕ * 4 * π
+                f_lm[k+1, m+l+1, vel_component] = intgl / tmp
             end
+            #println([l,m])
+            #println(tmp)
         end
     end
 
